@@ -12,7 +12,7 @@ app.use(cors());
 
 app.use('/api', router);
 
-// app.use(unknownEndpoint);
+app.use(unknownEndpoint);
 
 async function startApp() {
     try {

@@ -99,7 +99,53 @@ const authController = {
                 message: "Authorization failed",
             });
         }
+    },
+
+    async getMe(req, res) {
+        try{
+            const user = await User.findById(req.userId);
+            if(!user) {
+                return res.status(404).json({
+                    message: "User not found",
+                });
+            }
+    
+            res.json({
+               ...user._doc,
+            });
+        }catch (err) {
+            console.log(err);
+            res.status(500).json({
+                message: "No access",
+            });
+        }
+    },
+
+    async updateMe(req, res) {
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json(errors.array());
+        }
+
+        if(req.body.property === 'password'){
+            const salt = await bcrypt.genSalt(10);
+            req.body.value = await bcrypt.hash(req.body.value, salt);
+            req.body.property = "passwordHash"
+        }
+        await User.updateOne(
+            {
+                _id: req.userId
+            },
+            {
+                [req.body.property]: req.body.value
+            }
+        );
+
+        res.json({
+            success: true,
+        })
     }
 }
+
 
 export default authController;
