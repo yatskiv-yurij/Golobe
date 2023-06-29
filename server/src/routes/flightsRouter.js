@@ -4,7 +4,8 @@ import flightsController from "../controllers/flightsController.js";
 
 const flightsRouter = new Router();
 
-// flightsRouter.get('/all');
 flightsRouter.post('/create', flightsController.create);
+flightsRouter.get('/all', flightsController.getAll);
+flightsRouter.get('/:id', flightsController.getById);
 
 export default flightsRouter;

@@ -33,6 +33,27 @@ const flightsController = {
             console.log(err);
             return res.status(400).json({ error: 'Failed create flight' });
         }
+    },
+
+    async getAll (req, res) {
+        try {
+            const flights = await Flight.find();
+            return res.status(200).json(flights);
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({error: 'Failed take flights'})
+        }
+    },
+
+    async getById (req, res) {
+        try {
+            const flight = await Flight.findById(req.params.id);
+            if (!flight) return res.status(500).json({ error: 'Flight not found' });
+            return res.status(200).json(flight);
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({error: 'Failed take flight'})
+        }
     }
 }
 
