@@ -20,6 +20,27 @@ const staysController = {
             console.log(err);
             return res.status(400).json({ error: 'Failed create stay' });
         }
+    },
+
+    async getAll (req, res) {
+        try {
+            const stays = await Stay.find();
+            return res.status(200).json(stays);
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({error: 'Failed take stays'})
+        }
+    },
+
+    async getById (req, res) {
+        try {
+            const stay = await Stay.findById(req.params.id);
+            if (!stay) return res.status(500).json({ error: 'Stay not found' });
+            return res.status(200).json(stay);
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({error: 'Failed take stay'})
+        }
     }
 }
 
